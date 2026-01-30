@@ -1,3 +1,4 @@
+
 <div class="container">
     <div class="row">
         <div  class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="layout-account">
@@ -17,13 +18,11 @@
 
                         <div class="clearfix large_form">
                             <label for="username" class="icon-field">Tài khoản</label>
-                            <input required type="text" value="" name="username" id="username" placeholder="Username" class="text" />
+                            <input required type="text" value="" name="username" id="username" placeholder="Vui lòng điền tên tài khoản" class="text" autocomplete="off" />
                         </div>
-
-
                         <div class="clearfix large_form">
                             <label for="password" class="icon-field">Mật khẩu</label>
-                            <input required type="password" name="password" id="password" placeholder="Mật khẩu" class="text" size="16" />
+                            <input required type="password" name="password" id="password" placeholder="Vui lòng điền mật khẩu" class="text" size="16" autocomplete="off" />
                         </div>
 
 

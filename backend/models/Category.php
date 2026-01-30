@@ -113,22 +113,42 @@ VALUES (:name, :avatar, :description, :status)";
     return $obj_update->execute($arr_update);
   }
 
-  /**
-   * Xóa bản ghi theo id truyền vào
+   /**
+   * Xóa bản ghi theo id truyền vào (bao gồm các dữ liệu liên quan)
    * @param $id
    * @return bool
    */
   public function delete($id)
   {
-    $obj_delete = $this->connection
-        ->prepare("DELETE FROM categories WHERE id = $id");
-    $is_delete = $obj_delete->execute();
-    //để đảm bảo toàn vẹn dữ liệu, sau khi xóa category thì cần xóa cả các product nào đang thuộc về category này
-    $obj_delete_product = $this->connection
-        ->prepare("DELETE FROM products WHERE category_id = $id");
-    $obj_delete_product->execute();
+    // Bắt đầu transaction để đảm bảo an toàn dữ liệu
+    try {
+      $this->connection->beginTransaction();
 
-    return $is_delete;
+      // Xóa các bản ghi trong bảng news liên quan đến danh mục này
+      $obj_delete_news = $this->connection
+          ->prepare("DELETE FROM news WHERE category_id = :id");
+      $obj_delete_news->execute([':id' => $id]);
+
+      // Xóa toàn bộ sản phẩm thuộc danh mục này
+      $obj_delete_products = $this->connection
+          ->prepare("DELETE FROM products WHERE category_id = :id");
+      $obj_delete_products->execute([':id' => $id]);
+
+      // Xóa danh mục chính
+      $obj_delete_category = $this->connection
+          ->prepare("DELETE FROM categories WHERE id = :id");
+      $is_delete = $obj_delete_category->execute([':id' => $id]);
+
+      // Commit transaction nếu không lỗi
+      $this->connection->commit();
+      return $is_delete;
+
+    } catch (PDOException $e) {
+      // Nếu có lỗi, rollback để dữ liệu không bị hỏng
+      $this->connection->rollBack();
+      error_log("Lỗi khi xóa danh mục: " . $e->getMessage());
+      return false;
+    }
   }
 
   //trả về tổng số bản ghi của bảng categories
@@ -147,4 +167,5 @@ VALUES (:name, :avatar, :description, :status)";
 //      var_dump($count);
       return $count;
   }
+  
 }

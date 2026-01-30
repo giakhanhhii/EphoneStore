@@ -1,4 +1,3 @@
-
 <section id="wrapper-product-detail">
     <div class="container">
         <div class="row">
@@ -40,45 +39,44 @@
                             <div class="product-price" id="price-preview">
                                 <span><?php echo number_format($product['price']); ?>đ</span>
                             </div>
+                            <div class="product-quantity">
+                            <strong>Số lượng còn lại:</strong> 
+                            <?php echo $product['quantity'] > 0 ? $product['quantity'] : '<span style="color:red">Hết hàng</span>'; ?>
+                            </div>
 
 
-
-                            <form id="add-item-form" action="https://growmax.myharavan.com/cart/add" method="post" class="variants clearfix">
-                                <div class="select clearfix" style="display:none">
-                                    <select id="product-select" name="id" style="display:none">
-
-                                        <option value="1007783324">Default Title - 16,000₫</option>
-
-                                    </select>
-                                </div>
-                                <div class="pd40 clearfix">
-                                    <div class="row">
-                                        <div class="col-lg-5 col-md-12 col-sm-6 col-xs-12">
-                                            <div class="quantity-box clearfix">
-                                                <div class="quantity-bgr">
-
-                                                    <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
-
+                            <?php if ($product['quantity'] > 0): ?>
+                                <form id="add-item-form" action="index.php?controller=cart&action=add&id=<?php echo $product['id']; ?>" method="post" class="variants clearfix">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                    <div class="pd40 clearfix">
+                                        <div class="row">
+                                            <div class="col-lg-5 col-md-12 col-sm-6 col-xs-12">
+                                                <div class="quantity-box clearfix">
+                                                    <div class="quantity-bgr">
+                                                        <input type="number" id="Quantity" name="quantity" value="1" min="1" max="<?php echo $product['quantity']; ?>" class="quantity-selector">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-7 col-md-12 col-sm-6 col-xs-12">
+                                                <div class="box-add-cart">
+                                                    <button type="submit" id="add-to-cart" class="btn-detail addtocart btn-color-add btn-min-width btn-mgt" name="add">
+                                                        Thêm vào giỏ
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-7 col-md-12 col-sm-6 col-xs-12">
-                                            <div class="box-add-cart">
-                                                <a href="them-vao-gio-hang/<?php echo $product['id'];?>">
-                                                <button type="button" id="add-to-cart"   class=" btn-detail addtocart btn-color-add btn-min-width btn-mgt" name="add">
-                                                    Thêm vào giỏ
-                                                </button>
-                                                </a>
-                                            </div>
-                                        </div>
+                                    </div>
+                                </form>
+                            <?php else: ?>
+                                <div class="pd40 clearfix">
+                                    <div class="box-add-cart">
+                                        <button type="button" class="btn-detail btn-min-width btn-mgt" disabled style="background-color: #999; cursor: not-allowed;">
+                                            Hết hàng
+                                        </button>
                                     </div>
                                 </div>
-                            </form>
-
-
-
+                            <?php endif; ?>
                             <div class="pt20">
-                                <!-- Begin social icons -->
                                 <div class="addthis_toolbox addthis_default_style ">
 
                                     <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
@@ -88,12 +86,10 @@
 
                                 </div>
                                 <script type="text/javascript" src="../../s7.addthis.com/js/250/addthis_widget.js"></script>
-                                <!-- End social icons -->
-                            </div>
+                                </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:20px;">
                             <div role="tabpanel" class="product-comment">
-                                <!-- Nav tabs -->
                                 <ul class="nav nav-tabs" id="page-product" role="tablist">
                                     <li role="presentation" ><a  href="#mota" aria-controls="mota" role="tab" data-toggle="tab">Mô tả sản phẩm</a></li>
 
@@ -102,7 +98,6 @@
                                     </li>
 
                                 </ul>
-                                <!-- Tab panes -->
                                 <div class="tab-content">
                                     <div role="tabpanel" class="tab-pane" id="mota">
                                         <div class="container-fluid product-description-wrapper">
@@ -120,8 +115,7 @@
 
                                             <div class="fb-comments" data-href="https://growmax.myharavan.com/products/bap-cai-tim" data-width="100%" data-numposts="5"></div>
 
-                                            <div id="fb-root"></div>				<!-- script comment fb -->
-                                            <script>(function(d, s, id) {
+                                            <div id="fb-root"></div>				<script>(function(d, s, id) {
                                                     var js, fjs = d.getElementsByTagName(s)[0];
                                                     if (d.getElementById(id)) return;
                                                     js = d.createElement(s); js.id = id;

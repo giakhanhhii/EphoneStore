@@ -9,7 +9,15 @@ class OrderController extends Controller
     public function index()
     {
         $order_model = new Order();
-        $orders = $order_model->getAll();
+        
+        // Lấy từ khóa tìm kiếm
+        $search_query = isset($_GET['query']) ? $_GET['query'] : null;
+        
+        // Lấy trạng thái lọc (kiểm tra !== '' để cho phép lọc cả status 0)
+        $filter_status = isset($_GET['status']) && $_GET['status'] !== '' ? $_GET['status'] : null;
+        
+        // Truyền cả hai vào hàm getAll()
+        $orders = $order_model->getAll($search_query, $filter_status);
 
         $this->content = $this->render('views/orders/index.php', [
             'orders' => $orders
@@ -43,18 +51,14 @@ class OrderController extends Controller
 
         //xử lý submit form
         if (isset($_POST['submit'])) {
-            //            echo "<pre>";
-            //            print_r($_POST);
-            //            echo "</pre>";
+            
             $fullname = $_POST['fullname'];
             $address = $_POST['address'];
             $mobile = $_POST['mobile'];
             $email = $_POST['email'];
             $note = $_POST['note'];
-            $price_total = $_POST['price_total'];
-            $payment_status = $_POST['payment_status'];
+            $order_status = $_POST['order_status']; 
 
-            //xử lý validate
             //xử lý validate
             if (empty($fullname)) {
                 $this->error = 'Không được để trống fullname';
@@ -74,8 +78,7 @@ class OrderController extends Controller
                 $order_model->mobile = $mobile;
                 $order_model->email = $email;
                 $order_model->note = $note;
-                $order_model->price_total = $price_total;
-                $order_model->payment_status = $payment_status;
+                $order_model->order_status = $order_status; 
                 $order_model->updated_at = date('Y-m-d H:i:s');
 
                 $is_update = $order_model->update($id);

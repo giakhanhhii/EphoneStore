@@ -1,54 +1,78 @@
 <?php
 require_once 'helpers/Helper.php';
 ?>
+<h2>Chi tiết đơn hàng</h2>
 <table class="table table-bordered">
     <tr>
         <th>ID</th>
-        <td><?php echo $order['id']?></td>
-    </tr>
-
-    <tr>
-        <th>User_id</th>
-        <td><?php echo $order['user_id']?></td>
+        <td><?php echo $order['id'] ?></td>
     </tr>
     <tr>
-        <th>Fullname</th>
-        <td><?php echo $order['fullname']?></td>
+        <th>Tên khách hàng</th>
+        <td><?php echo $order['fullname'] ?></td>
     </tr>
     <tr>
-        <th>Address</th>
-        <td><?php echo $order['address']?></td>
+        <th>Địa chỉ</th>
+        <td><?php echo $order['address'] ?></td>
     </tr>
     <tr>
-        <th>Mobile</th>
-        <td><?php echo $order['mobile']?></td>
+        <th>SĐT</th>
+        <td><?php echo $order['mobile'] ?></td>
     </tr>
-
     <tr>
         <th>Email</th>
-        <td><?php echo $order['email']?></td>
+        <td><?php echo $order['email'] ?></td>
     </tr>
     <tr>
-        <th>Note</th>
-        <td><?php echo $order['note']?></td>
+        <th>Ghi chú</th>
+        <td><?php echo $order['note'] ?></td>
     </tr>
     <tr>
-        <th>Price_total</th>
-        <td><?php echo $order['price_total']?></td>
-    </tr>
-    <tr>
-        <th>Payment_status</th>
+        <th>Tổng tiền</th>
         <td>
-            <?php echo Helper::getStatusTextOrder($order['payment_status']) ?>
+            <?php echo number_format($order['price_total'], 0, '.', '.') ?> đ
+        </td>
+    </tr>
+
+    <tr>
+        <th>Trạng thái thanh toán</th>
+        <td>
+            <?php
+            $status_text = '';
+            switch ($order['payment_status']) {
+                case 0:
+                    $status_text = 'Chờ xác nhận';
+                    break;
+                case 1:
+                    $status_text = 'Chờ giao hàng';
+                    break;
+                case 2:
+                    $status_text = 'Đang giao';
+                    break;
+                case 3:
+                    $status_text = 'Đã giao';
+                    break;
+                case 4:
+                    $status_text = 'Huỷ hàng';
+                    break;
+            }
+            echo $status_text;
+            ?>
         </td>
     </tr>
     <tr>
-        <th>Order_date</th>
+        <th>Tạo lúc</th>
         <td><?php echo date('d-m-Y H:i:s', strtotime($order['created_at'])) ?></td>
     </tr>
     <tr>
-        <th>Payment_Date</th>
-        <td><?php echo !empty($order['updated_at']) ? date('d-m-Y H:i:s', strtotime($order['updated_at'])) : '--' ?></td>
+        <th>Cập nhật lúc</th>
+        <td>
+            <?php
+            if (!empty($order['updated_at'])) {
+                echo date('d-m-Y H:i:s', strtotime($order['updated_at']));
+            }
+            ?>
+        </td>
     </tr>
 </table>
-<a href="index.php?controller=order&action=index" class="btn btn-default">Back</a>
+<a href="index.php?controller=order" class="btn btn-default">Back</a>

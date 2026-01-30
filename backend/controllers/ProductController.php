@@ -55,8 +55,10 @@ class ProductController extends Controller
             $category_id = $_POST['category_id'];
             $title = $_POST['title'];
             $price = $_POST['price'];
+            $quantity = $_POST['quantity'];
             $weight = $_POST['weight'];
             $supplier = $_POST['supplier'];
+            $hot = isset($_POST['hot']) ? $_POST['hot'] : 0;
             $summary = $_POST['summary'];
             $content = $_POST['content'];
             $status = $_POST['status'];
@@ -64,6 +66,9 @@ class ProductController extends Controller
             //xử lý validate
             if (empty($title)) {
                 $this->error = 'Không được để trống title';
+            } else if (empty($quantity) || !is_numeric($quantity) || $quantity < 0) { 
+             // Validate số lượng
+                $this->error = 'Số lượng không hợp lệ hoặc không được để trống';
             } else if ($_FILES['avatar']['error'] == 0) {
                 //validate khi có file upload lên thì bắt buộc phải là ảnh và dung lượng không quá 2 Mb
                 $extension = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
@@ -102,6 +107,7 @@ class ProductController extends Controller
                 $product_model->title = $title;
                 $product_model->avatar = $filename;
                 $product_model->price = $price;
+                $product_model->quantity = $quantity;
                 $product_model->weight = $weight;
                 $product_model->supplier = $supplier;
                 $product_model->summary = $summary;
@@ -163,15 +169,19 @@ class ProductController extends Controller
             $category_id = $_POST['category_id'];
             $title = $_POST['title'];
             $price = $_POST['price'];
+            $quantity = $_POST['quantity'];
             $weight = $_POST['weight'];
             $supplier = $_POST['supplier'];
             $summary = $_POST['summary'];
             $content = $_POST['content'];
-            $hot = $_POST['hot'];
+            $hot = isset($_POST['hot']) ? $_POST['hot'] : 0;
             $status = $_POST['status'];
             //xử lý validate
             if (empty($title)) {
                 $this->error = 'Không được để trống title';
+           } else if (!is_numeric($_POST['quantity']) || $quantity < 0) {
+    // Vẫn dùng $_POST['quantity'] để kiểm tra nếu input không phải là số (như 'abc')
+    $this->error = 'Số lượng phải là một số và không được là số âm';
             } else if ($_FILES['avatar']['error'] == 0) {
                 //validate khi có file upload lên thì bắt buộc phải là ảnh và dung lượng không quá 2 Mb
                 $extension = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
@@ -209,6 +219,7 @@ class ProductController extends Controller
                 $product_model->title = $title;
                 $product_model->avatar = $filename;
                 $product_model->price = $price;
+                $product_model->quantity = $quantity;
                 $product_model->weight = $weight;
                 $product_model->supplier = $supplier;
                 $product_model->summary = $summary;
@@ -239,21 +250,23 @@ class ProductController extends Controller
     }
 
     public function delete() {
-        if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-            $_SESSION['error'] = 'ID không hợp lệ';
-            header('Location: index.php?controller=product');
-            exit();
-        }
-
-        $id = $_GET['id'];
-        $product_model = new Product();
-        $is_delete = $product_model->delete($id);
-        if ($is_delete) {
-            $_SESSION['success'] = 'Xóa dữ liệu thành công';
-        } else {
-            $_SESSION['error'] = 'Xóa dữ liệu thất bại';
-        }
+    if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+        $_SESSION['error'] = 'ID không hợp lệ';
         header('Location: index.php?controller=product');
         exit();
     }
+
+    $id = $_GET['id'];
+    $product_model = new Product();
+    $is_delete = $product_model->delete($id);
+    if ($is_delete) {
+        $_SESSION['success'] = 'Xóa dữ liệu thành công';
+    } else {
+        $_SESSION['error'] = 'Không thể xóa sản phẩm này vì đang được sử dụng trong đơn hàng!';
+    }
+    header('Location: index.php?controller=product');
+    exit();
+}
+
+
 }

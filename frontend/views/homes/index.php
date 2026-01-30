@@ -36,16 +36,9 @@ require_once 'helpers/Helper.php';
 
                 <?php endforeach; ?>
 
-
-
-
-
             </div>
         </div>
     </div>
-
-
-
 
     <div class="wap-list-product">
         <div class="container">
@@ -59,7 +52,6 @@ require_once 'helpers/Helper.php';
                 </p>
             </div>
             <div class="row content-product-list products-resize">
-                <!--                START ITEM-->
                 <?php if (!empty($products)) : ?>
                     <?php
                     foreach ($products as $product) :
@@ -68,28 +60,44 @@ require_once 'helpers/Helper.php';
                         $product_id = $product['id'];
                         $product_weight = $product['weight'];
                         $product_supplier = $product['supplier'];
-                        $product_link = "chi-tiet-san-pham/$product_slug/$product_id";
+                        
+                        $product_link = "index.php?controller=product&action=detail&slug=$product_slug&id=$product_id";
 
+                        // KIỂM TRA TỒN KHO
+                        $is_out_of_stock = ($product['quantity'] <= 0);
                     ?>
-
-
-                        <div class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp animation rainbow_0" style="visibility: visible; animation-name: fadeInUp;">
+                        
+                        <div class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp animation rainbow_0">
+                            
                             <div class="product-item product-resize">
-                                <div class="product-img image-resize">
+                                
+                                <div class="product-img image-resize" style="position: relative;">
+                                    
+                                    <?php if ($is_out_of_stock): ?>
+                                        <div class="out-of-stock-overlay">Hết hàng</div>
+                                    <?php endif; ?>
+
                                     <a href="<?php echo $product_link; ?>" title="<?php echo $product_title; ?>">
                                         <img alt=" <?php echo $product_title; ?> " src="../backend/assets/uploads/<?php echo $product['avatar']; ?>" />
                                     </a>
                                     <a href="<?php echo $product_link; ?>" class="mask-brg"></a>
                                     <div class="hover-mask">
                                         <div class="inner-mask">
-                                            <a class="add-view-cart btn-cart add-cart " data-variant="1007783439" href="them-vao-gio-hang/<?php echo $product['id']; ?>" title="Thêm vào giỏ">
-                                                <i class="fa fa-bars"></i>
-                                                Thêm vào giỏ
-                                            </a>
+                                            
+                                            <?php if ($is_out_of_stock): ?>
+                                                <a class="add-view-cart btn-cart add-cart-disabled" href="javascript:void(0)" title="Hết hàng" style="background-color: #999 !important; cursor: default;">
+                                                    <i class="fa fa-bars"></i>
+                                                    Hết hàng
+                                                </a>
+                                            <?php else: ?>
+                                                <a class="add-view-cart btn-cart add-cart " data-variant="1007783439" href="index.php?controller=cart&action=add&id=<?php echo $product['id']; ?>" title="Thêm vào giỏ">
+                                                    <i class="fa fa-bars"></i>
+                                                    Thêm vào giỏ
+                                                </a>
+                                            <?php endif; ?>
                                             <ul class="add-to-links">
                                                 <li><a href="<?php echo $product_link; ?>" class="mask-view" data-handle="/products/phuc-bon-tu" title="Xem nhanh"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="<?php echo $product_link; ?>" class="" title="Xem chi tiết"><i class="fa fa-search"></i></a></li>
-                                            </ul>
+                                                </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -107,18 +115,14 @@ require_once 'helpers/Helper.php';
                                 </div>
                             </div>
                         </div>
-                        <!--END ITEM             -->
-
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
                 <?php else : ?>
                     <h2>Không có sản phẩm nào</h2>
                 <?php endif; ?>
 
-
             </div>
         </div>
     </div>
-
 
     <div class="wap2">
 
@@ -127,8 +131,6 @@ require_once 'helpers/Helper.php';
         </div>
         <div class="gallery-image">
             <ul class="list-gallery  ">
-
-
 
                 <?php
                 foreach ($compo_imgs as $compo_img) :
@@ -141,9 +143,6 @@ require_once 'helpers/Helper.php';
                     </li>
                 <?php endforeach; ?>
 
-
-
-
             </ul>
         </div>
         <script type="text/javascript">
@@ -154,22 +153,21 @@ require_once 'helpers/Helper.php';
 
     </div>
 
-
     <div class="wap3">
         <div class="container">
             <div class="row">
                 <?php foreach ($introduces as $introduce) : ?>
                     <div class="col-md-6 wow slideInLeft">
-                        <a href="gioi-thieu">
+                        
+                        <a href="index.php?controller=introduce&action=index">
                             <img src="../backend/assets/uploads/<?php echo $introduce['avatar'] ?>">
                         </a>
                     </div>
 
-
                     <div class="col-md-6 pull-right wow slideInRight">
                         <div class="about">
                             <div class="title-about">
-                                <h2>SƠ LƯỢC </h2>
+                                TIN TỨC SẢN PHẨM </h2>
                                 <h3>Về chúng tôi</h3>
                             </div>
                             <div class="datail-about">
@@ -182,10 +180,8 @@ require_once 'helpers/Helper.php';
         </div>
     </div>
 
-
     <div class="wap4">
         <div class="container">
-
 
             <div class="newsletter">
                 <div class="home-title">
@@ -194,14 +190,15 @@ require_once 'helpers/Helper.php';
                 <div class="row">
                     <?php
                     foreach ($news as $new) :
+                        $new_slug = Helper::getSlug($new['title']);
+                        $new_id = $new['id'];
+                        $new_link = "index.php?controller=new&action=detail&slug=$new_slug&id=$new_id";
                     ?>
                         <div class="col-md-4 wow fadeInUp">
                             <div class="news-item  text-center">
                                 <div class="img-news">
-                                    <a href="#">
-
+                                    <a href="<?php echo $new_link; ?>">
                                         <img src="../backend/assets/uploads/<?php echo $new['avatar'] ?>" alt="<?php echo $new['title'] ?>">
-
                                     </a>
                                 </div>
                                 <div class="content-news">
@@ -214,15 +211,10 @@ require_once 'helpers/Helper.php';
                         </div>
                     <?php endforeach; ?>
 
-
-
                 </div>
             </div>
 
-
         </div>
     </div>
-
-
 
 </div>

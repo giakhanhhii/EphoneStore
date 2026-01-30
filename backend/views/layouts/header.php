@@ -1,48 +1,34 @@
-<!--views/layouts/header.php-->
 <?php
-//do đã có dữ liệu từ chức năng đăng nhập
-//nên sẽ lấy thông tin thật từ session user đã tạo
-//echo "<pre>";
-//print_r($_SESSION);
-//echo "</pre>";
-//die;
+// ... (code PHP ở đầu file giữ nguyên) ...
 ?>
 <header class="main-header">
-    <!-- Logo -->
     <a href="index2.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>A</b>LT</span>
-        <!-- logo for regular state and mobile devices -->
         <span class="logo-lg"><b>Admin</b>LTE</span>
     </a>
-    <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <i class="fa fa-bars"></i>
         </a>
 
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
-                <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="assets/images/anhdaidien.jpg" class="user-image" alt="User Image">
                         <span class="hidden-xs">
-                            <?php echo $_SESSION['user']['username']; ?>
+                            <?php echo $_SESSION['admin']['username']; ?>
                         </span>
                     </a>
                     <ul class="dropdown-menu">
-                        <!-- User image -->
                         <li class="user-header">
                             <img src="assets/images/anhdaidien.jpg" class="img-circle" alt="User Image">
 
                             <p>
-                                <?php echo $_SESSION['user']['username']?> - Web Developer
+                                <?php echo $_SESSION['admin']['username']?> - Web Developer
                                 <small>Thành viên từ năm 2012</small>
                             </p>
                         </li>
-                        <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
@@ -60,21 +46,17 @@
         </div>
     </nav>
 </header>
-<!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-        <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
                 <img src="assets/images/anhdaidien.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
-                <p><?php echo $_SESSION['user']['username']?></p>
+                <p><?php echo $_SESSION['admin']['username']?></p>
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
-        <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">LAOYOUT ADMIN</li>
 
@@ -82,76 +64,36 @@
                 <a href="index.php?controller=category&action=index">
                     <i class="fa fa-th"></i> <span>Quản lý danh mục</span>
                     <span class="pull-right-container">
-              <!--<small class="label pull-right bg-green">new</small>-->
-            </span>
+                    </span>
                 </a>
             </li>
             <li>
                 <a href="index.php?controller=product&action=index">
                     <i class="fa fa-lemon"></i> <span>Quản lý sản phẩm</span>
                     <span class="pull-right-container">
-              <!--<small class="label pull-right bg-green">new</small>-->
-            </span>
-                </a>
-            </li>
-            <li>
-                <a href="index.php?controller=slide&action=index">
-                    <i class="fa fa-images"></i> <span>Quản lý banner</span>
-                    <span class="pull-right-container">
-              <!--<small class="label pull-right bg-green">new</small>-->
-            </span>
-
-                </a>
-
-            </li>
-            <li>
-                <a href="index.php?controller=new&action=index">
-                    <i class="fa fa-newspaper"></i> <span>Quản lý tin tức</span>
-                    <span class="pull-right-container">
-              <!--<small class="label pull-right bg-green">new</small>-->
-            </span>
-                </a>
-            </li>
-            <li>
-                <a href="index.php?controller=introduce&action=index">
-                    <i class="fa fa-inbox"></i> <span>Quản lý giới thiệu</span>
-                    <span class="pull-right-container">
-              <!--<small class="label pull-right bg-green">new</small>-->
-            </span>
-                </a>
-            </li>
-            <li>
-                <a href="index.php?controller=map&action=index">
-                    <i class="fa fa-map"></i> <span>Quản lý bản đồ</span>
-                    <span class="pull-right-container">
-              <!--<small class="label pull-right bg-green">new</small>-->
-            </span>
+                    </span>
                 </a>
             </li>
             <li>
                 <a href="index.php?controller=order&action=index">
-                    <i class="fa fa-shopping-basket"></i> <span>Quản lý đặt hàng</span>
+                    <i class="fa fa-shopping-basket"></i> <span>Quản lý đơn hàng</span>
                     <span class="pull-right-container">
-              <!--<small class="label pull-right bg-green">new</small>-->
-            </span>
+                    </span>
                 </a>
             </li>
+            
             <li>
-                <a href="index.php?controller=orderdetail&action=index">
-                    <i class="fa fa-money-check-alt"></i> <span>Quản lý thanh toán</span>
+                <a href="index.php?controller=user&action=index">
+                    <i class="fa fa-users"></i> <span>Quản lý tài khoản</span>
                     <span class="pull-right-container">
-              <!--<small class="label pull-right bg-green">new</small>-->
-            </span>
+                    </span>
                 </a>
             </li>
-        </ul>
+            </ul>
     </section>
-    <!-- /.sidebar -->
-</aside>
+    </aside>
 
-<!-- Breadcrumd Wrapper. Contains breadcrumb -->
 <div class="breadcrumb-wrap content-wrap content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
             Dashboard

@@ -2,6 +2,17 @@
 require_once 'helpers/Helper.php';
 ?>
 <div class="container">
+
+    <?php
+    // ✅ THÊM: Hiển thị thông báo lỗi (từ PaymentController)
+    // (Lỗi tồn kho hoặc lỗi validate)
+    if (isset($this->error)):
+    ?>
+        <div class="alert alert-danger" style="margin-top: 15px;">
+            <?php echo $this->error; // Hiển thị lỗi (cho phép cả HTML) ?>
+        </div>
+    <?php endif; ?>
+
     <h2>Thanh toán</h2>
     <form action="" method="POST">
         <div class="row">

@@ -30,6 +30,10 @@
                class="form-control" id="price"/>
     </div>
     <div class="form-group">
+        <label for="quantity">Số lượng</label>
+        <input type="number" name="quantity" id="quantity" value="<?php echo isset($_POST['quantity']) ? $_POST['quantity'] : 0 ?>" class="form-control" min="0"/>
+    </div>
+    <div class="form-group">
         <label for="weight">Cân nặng của 1 sản phẩm</label>
         <input type="text" name="weight" value="<?php echo isset($_POST['weight']) ? $_POST['weight'] : '' ?>"
                class="form-control" id="weight"/>

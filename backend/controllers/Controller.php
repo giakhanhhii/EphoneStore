@@ -11,7 +11,7 @@ class Controller {
     public function __construct() {
         //nếu như không tồn tại session user và controller không phải là Login để tránh trường hợp chuyển hướng lặp lại liên tục
 
-        if (!isset($_SESSION['user']) && $_GET['controller'] != 'login') {
+        if (!isset($_SESSION['admin']) && $_GET['controller'] != 'login') {
             $_SESSION['error'] = 'Bạn chưa đăng nhập';
             header('Location: index.php?controller=login&action=login');
             exit();

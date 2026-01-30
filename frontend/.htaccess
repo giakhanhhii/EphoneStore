@@ -1,12 +1,7 @@
-#. htaccess nằm cùng cấp với file index.php gốc của ứng dụng
-# File này thường dùng cho việc viết lại url (rewrite) dạng url thân thiện
-# FIle này là 1 file rất nhạy cảm, chỉ thừa thiếu 1 ký tự là sẽ chết trang
-# Cần chứ ý khi chỉnh sửa file này
-# thường sẽ nhớ máy móc chứ k nên học kĩ về cú pháp của file này
-# KHai báo cho phép sử dụng rewrite url trên hệ thống
 RewriteEngine On
 
-# VIết rewrite cho trang chi tiết sản phẩm cần xác định các giá trị động cần dùng để biểu thức regex tương ứng
+# VIết rewrite cho trang chi tiết sản phẩm cần xác định các giá trị động cần dùng để biểu thức 
+# regex tương ứng
 # .* -> đại diện cho ký tự bất kỳ, xuất hiện ít nhất 1 lần trở lên
 # [0-9]{1,}: chỉ các kí tự số xuất hiện ít nhất 1 lần
 # có thể dùng regex để bắt validate luôn cho các tham số mà k cần bắt trực tiếp trong code PHP
@@ -15,7 +10,8 @@ RewriteEngine On
 RewriteRule chi-tiet-san-pham/(.*)/([0-9]{1,}) index.php?controller=product&action=detail&slug=$1&id=$2
 #rule cho trang danh sách sản phẩm
 RewriteRule danh-sach-san-pham index.php?controller=product&action=showAll
-#rule cho trang thêm vào giỏ hàng
+#rule cho trang thêm vào 
+# giỏ hàng
 RewriteRule them-vao-gio-hang/([0-9]{1,}) index.php?controller=cart&action=add&id=$1
 #rule cho trang giỏ hàng của bạn
 RewriteRule gio-hang-cua-ban index.php?controller=cart&action=index
@@ -41,5 +37,9 @@ RewriteRule dang-nhap index.php?controller=login&action=login
 RewriteRule dang-ky index.php?controller=login&action=signup
 #rule cho đăng xuất
 RewriteRule dang-xuat index.php?controller=login&action=logout
+
+# *** RULE MỚI CHO LỊCH SỬ ĐƠN HÀNG ***
+RewriteRule ^lich-su-don-hang$ index.php?controller=user&action=history [L]
+
 #rule cho trang thanh toan online
 RewriteRule thanh-toan-truc-tuyen index.php?controller=payment&action=online

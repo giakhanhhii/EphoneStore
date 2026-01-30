@@ -22,6 +22,9 @@ class ProductController extends Controller
 
         $product_model = new Product();
         $product = $product_model->getById($id);
+        if (empty($product)) {
+        die("Không tìm thấy sản phẩm có ID = $id");
+        }
         //lấy nội dung view chi tiết tương ứng
         $this->content = $this->render('views/products/detail.php', [
             'slides' => $slides,

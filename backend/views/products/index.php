@@ -43,6 +43,7 @@ require_once 'helpers/Helper.php';
         <th>Title</th>
         <th>Avatar</th>
         <th>Price</th>
+        <th>Số lượng</th>
         <th>Weight</th>
         <th>Supplier</th>
         <th>Hot</th>
@@ -63,6 +64,7 @@ require_once 'helpers/Helper.php';
                     <?php endif; ?>
                 </td>
                 <td><?php echo number_format($product['price']) ?></td>
+               <td><?php echo isset($product['quantity']) ? $product['quantity'] : 0 ?></td>
                 <td><?php echo $product['weight'] ?></td>
                 <td><?php echo $product['supplier'] ?></td>
                 <td><?php echo $product['hot'] ?></td>

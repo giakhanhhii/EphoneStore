@@ -1,19 +1,22 @@
-<!doctype html>
-<!--[if lt IE 7]><html class="no-js ie6 oldie" lang="en"><![endif]-->
-<!--[if IE 7]><html class="no-js ie7 oldie" lang="en"><![endif]-->
-<!--[if IE 8]><html class="no-js ie8 oldie" lang="en"><![endif]-->
-<!--[if gt IE 8]><!-->
-<html lang="en">
-<!--<![endif]-->
-<base href="<?php echo $_SERVER['SCRIPT_NAME']; ?>" />
-<!-- Mirrored from growmax.myharavan.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 05 Jul 2020 03:58:46 GMT -->
-<!-- Added by HTTrack -->
-<meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<?php
+// SỬA LỖI: Chủ động require_once các model mà layout này cần
+require_once 'models/Contact.php';
+require_once 'models/Category.php';
 
-<head>
-    <link rel="shortcut icon" href="assets/images/logo-dien-thoai-icon.png" type="image/png" />
+// SỬA LỖI: Bỏ '\models\' ra khỏi tên class
+$contact_model = new Contact();
+$contacts = $contact_model->getAll();
+
+// SỬA LỖI: Bỏ '\models\' ra khỏi tên class
+$category_model = new Category();
+$categories = $category_model->getAll();
+?>
+<!doctype html>
+<html lang="en">
+<base href="<?php echo $_SERVER['SCRIPT_NAME']; ?>" />
+<meta http-equiv="content-type" content="text/html;charset=utf-8" /><head>
+    <link rel="shortcut icon" href="assets/images/favicon-moi.png" type="image/png" />
     <meta charset="utf-8" />
-    <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /><![endif]-->
     <title>
         Digital World
     </title>
@@ -116,7 +119,7 @@
     <link href='assets/css/owl.carousel.css' rel='stylesheet' type='text/css' media='all' />
 
 
-    <script src='assets/js/jquery.fancybox.js' type='text/javascript'></script>
+    <script src='assetsV/js/jquery.fancybox.js' type='text/javascript'></script>
     <link href='assets/css/jquery.fancybox.css' rel='stylesheet' type='text/css' media='all' />
     <script src='assets/js/jquery.fancybox-media4c33.js?v=32' type='text/javascript'></script>
 
@@ -129,7 +132,6 @@
     <script src='assets/js/jquery.ui.touch-punch.min4c33.js?v=32' type='text/javascript'></script>
 
     <script type="text/javascript" src="assets/js/addthis_widget.js#pubid=ra-54aa0592190a1461" async="async"></script>
-    <!--------------CSS----------->
     <link href='assets/css/page-contact-form.css' rel='stylesheet' type='text/css' media='all' />
 
 
@@ -150,12 +152,8 @@
     <meta property="og:site_name" content="GrowMax" />
 
 
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.3.3.1.css">
     <link href='assets/css/bootstrap-theme4c33.css?v=32' rel='stylesheet' type='text/css' media='all' />
-    <!-- Theme haravan-->
-
-    <!-- Latest compiled and minified JavaScript -->
     <link href='assets/css/font-awesome.min.css' rel='stylesheet' type='text/css' media='all' />
 
     <link href='assets/css/flexslider.css' rel='stylesheet' type='text/css' media='all' />
@@ -214,7 +212,7 @@
 
                             <h1>
                                 <a href="index.php?controller=home&action=index">
-                                    <img src="assets/images/logo-dien-thoai.png" alt="Digital World" class="img-responsive" />
+                                    <img src="assets/images/logo-moi.png" alt="Digital World" class="img-responsive" />
                                 </a>
                             </h1>
 
@@ -234,21 +232,21 @@
 
                                 <div class="account-header">
                                     <div style="display: flex;">
+                                    
                                         <div style="display: inline-block;
-	vertical-align: top;
-	width: 42px ;
-	height: 42px;
-	background: #fff;
-	text-align: right;
-	font-size: 17px;
-	transition: all 0.2s ease-in;
-	-moz-transition: all 0.2s ease-in;
-	-webkit-transition: all 0.2s ease-in;
-	padding: 7px 80px 0px 0px;
-	margin: 18px 44px 0px 0px ;
-	cursor: pointer;">
-                                            <h4 style="text-align: right;">
-                                                <?php if (isset($_SESSION['user'])) : ?>
+    vertical-align: top;
+    width: 42px ;
+    height: 42px;
+    background: #000; /* <-- Đã SỬA thành nền đen */
+    text-align: right;
+    font-size: 17px;
+    transition: all 0.2s ease-in;
+    -moz-transition: all 0.2s ease-in;
+    -webkit-transition: all 0.2s ease-in;
+    padding: 7px 80px 0px 0px;
+    margin: 18px 44px 0px 0px ;
+    cursor: pointer;">
+                                            <h4 style="text-align: right; color: #FFFFFF;"> <?php if (isset($_SESSION['user'])) : ?>
                                                     <?php echo $_SESSION['user']['username']; ?>
                                                 <?php endif; ?>
                                             </h4>
@@ -265,43 +263,30 @@
                                         <ul class="account-links" style="text-align: left; font-weight: bold; font-size: 20px;">
 
                                             <?php if (isset($_SESSION['user'])) : ?>
-                                                <?php echo '<li><a href="dang-nhap" title="Đăng nhập">
-                                                    <span class="fa fa-sign-in"></span>
-                                                    Đăng nhập
-                                                </a></li>
-
-
-                                            <li><a href="dang-xuat">
+                                                
+                                                <li>
+                                                    <a href="index.php?controller=user&action=history">
+                                                        <span class="fa fa-history"></span>
+                                                        Lịch sử đặt hàng
+                                                    </a>
+                                                </li>
+                                                
+                                                <?php echo '<li><a href="index.php?controller=login&action=logout">
                                                     <span class="fa fa-sign-out"></span>
                                                     Đăng xuất
                                                 </a></li>'; ?>
                                             <?php else : ?>
-                                                <?php echo '<li><a href="dang-ky" title="Đăng ký">
+                                                <?php echo '<li><a href="index.php?controller=login&action=signup" title="Đăng ký">
                                                     <span class="fa fa-user"></span>
                                                     Đăng ký
                                                 </a></li>
 
-                                            <li><a href="dang-nhap" title="Đăng nhập">
+                                            <li><a href="index.php?controller=login&action=login" title="Đăng nhập">
                                                     <span class="fa fa-sign-in"></span>
                                                     Đăng nhập
                                                 </a></li>'; ?>
                                             <?php endif; ?>
 
-                                            <!-- <li><a href="dang-ky" title="Đăng ký">
-                                                    <span class="fa fa-user"></span>
-                                                    Đăng ký
-                                                </a></li>
-
-                                            <li><a href="dang-nhap" title="Đăng nhập">
-                                                    <span class="fa fa-sign-in"></span>
-                                                    Đăng nhập
-                                                </a></li>
-
-
-                                            <li><a href="dang-xuat">
-                                                    <span class="fa fa-sign-out"></span>
-                                                    Đăng xuất
-                                                </a></li> -->
                                         </ul>
                                     </div>
                                 </div>
@@ -316,8 +301,8 @@
 
                                     <div class="cart_content " id="view-cart">
                                         <?php
-                                        require_once 'controllers/CartController.php';
-                                        if (!isset($_SESSION['cart'])) :
+                                        //require_once 'controllers/CartController.php'; // Xóa dòng này nếu nó gây lỗi
+                                         if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) :
                                         ?>
                                             <div id="clone-item">
                                                 <div class="item_2 clearfix hidden item-ajax item-cart clearfix">
@@ -343,13 +328,13 @@
 
                                             <div style="padding: 40px 20px; font-size:15px;">
                                                 <p style="margin:0" class="text-center">Giỏ hàng của bạn đang trống</p>
-                                                <p class="text-center"><a href="danh-sach-san-pham">Tiếp tục mua hàng</a></p>
+                                                <p class="text-center"><a href="index.php?controller=product&action=showAll">Tiếp tục mua hàng</a></p>
                                             </div>
                                         <?php else : ?>
                                             <div style="padding: 40px 20px; font-size:15px;">
                                                 <p style="margin:0" class="text-center">Giỏ hàng của bạn đã có hàng</p>
-                                                <p class="text-center"><a href="gio-hang-cua-ban">Xem chi tiết giỏ hàng</a></p>
-                                                <p class="text-center"><a href="danh-sach-san-pham">Tiếp tục mua hàng</a></p>
+                                                <p class="text-center"><a href="index.php?controller=cart&action=index">Xem chi tiết giỏ hàng</a></p>
+                                                <p class="text-center"><a href="index.php?controller=product&action=showAll">Tiếp tục mua hàng</a></p>
                                             </div>
                                         <?php endif; ?>
                                     </div>
@@ -367,6 +352,7 @@
                             </div>
                             <div class="sponline">
                                 <?php
+                                // SỬA LỖI: $contacts đã được định nghĩa ở đầu file
                                 foreach ($contacts as $contact) :
                                 ?>
                                     Hotline hỗ trợ: <span class="phonehl">
@@ -382,7 +368,7 @@
             <div class="container">
                 <div class="mainmenu">
                     <div class="searchform">
-                        <form action="danh-sach-san-pham" method="post" class="search">
+                        <form action="index.php?controller=product&action=showAll" method="post" class="search">
                             <input type="hidden" name="type" value="product">
                             <input type="text" placeholder="Tìm kiếm" name="str-product-name">
                             <button type="submit"><img src="assets/images/icon_search4c33.png?v=32" alt=""></button>
@@ -393,30 +379,26 @@
 
 
                             <li>
-                                <a href="#" class="current" title="Trang chủ">Trang chủ </a>
+                                <a href="index.php?controller=home&action=index" class="current" title="Trang chủ">Trang chủ </a>
                             </li>
 
 
-
                             <li>
-                                <a href="danh-sach-san-pham" title="Sản phẩm">Sản Phẩm</a>
-
+                                <a href="index.php?controller=product&action=showAll" title="Sản phẩm">Sản Phẩm</a>
                             </li>
 
                             <li>
-                                <a href="tin-tuc" class="" title="Tin tức">Tin tức </a>
+                                <a href="index.php?controller=new&action=index" class="" title="Tin tức">Tin tức </a>
                             </li>
 
 
-
                             <li>
-                                <a href="gioi-thieu" class="" title="Giới thiệu">Giới thiệu </a>
+                                <a href="index.php?controller=introduce&action=index" class="" title="Giới thiệu">Giới thiệu </a>
                             </li>
 
 
-
                             <li>
-                                <a href="lien-he" class="" title="Liên hệ">Liên hệ </a>
+                                <a href="index.php?controller=contact&action=index" class="" title="Liên hệ">Liên hệ </a>
                             </li>
 
 
@@ -431,30 +413,26 @@
 
 
                                 <li>
-                                    <a href="#" class="current" title="Trang chủ">Trang chủ </a>
+                                    <a href="index.php?controller=home&action=index" class="current" title="Trang chủ">Trang chủ </a>
                                 </li>
 
 
-
                                 <li>
-                                    <a href="danh-sach-san-pham" title="Sản phẩm">Sản Phẩm</a>
-
+                                    <a href="index.php?controller=product&action=showAll" title="Sản phẩm">Sản Phẩm</a>
                                 </li>
 
                                 <li>
-                                    <a href="tin-tuc" class="" title="Tin tức">Tin tức </a>
+                                    <a href="index.php?controller=new&action=index" class="" title="Tin tức">Tin tức </a>
                                 </li>
 
 
-
                                 <li>
-                                    <a href="gioi-thieu" class="" title="Giới thiệu">Giới thiệu </a>
+                                    <a href="index.php?controller=introduce&action=index" class="" title="Giới thiệu">Giới thiệu </a>
                                 </li>
 
 
-
                                 <li>
-                                    <a href="lien-he" class="" title="Liên hệ">Liên hệ </a>
+                                    <a href="index.php?controller=contact&action=index" class="" title="Liên hệ">Liên hệ </a>
                                 </li>
 
                             </ul>
@@ -485,47 +463,51 @@
             </div>
         </div>
 
-        <!--    responsive-->
         <header>
 
             <div class="clear"></div>
-            <aside class="slider">
 
-                <!-- Begin slider -->
-                <div class="slider-default">
-                    <div class="flexslider-container">
-                        <div class="flexslider">
-                            <ul class="slides">
+            <?php
+            // Lấy controller từ URL, nếu không có thì mặc định là 'home'
+            $controller = isset($_GET['controller']) ? $_GET['controller'] : 'home';
+            // Chỉ hiển thị banner nếu controller là 'home'
+            if ($controller == 'home') :
+            ?>
+                <aside class="slider">
 
-                                <?php
-                                foreach ($slides as $slide) : ?>
+                    <div class="slider-default">
+                        <div class="flexslider-container">
+                            <div class="flexslider">
+                                <ul class="slides">
 
-                                    <li>
-                                        <a href="#">
-                                            <img src="../backend/assets/uploads/<?php echo $slide['avatar'] ?>" />
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
+                                    <?php
+                                    // Kiểm tra $slides tồn tại (vì $slides chỉ đc controller Home truyền vào)
+                                    if (isset($slides) && !empty($slides)) {
+                                        foreach ($slides as $slide) : ?>
+
+                                            <li>
+                                                <a href="#">
+                                                    <img src="../backend/assets/uploads/<?php echo $slide['avatar'] ?>" />
+                                                </a>
+                                            </li>
+                                    <?php 
+                                        endforeach; 
+                                    }
+                                    ?>
 
 
 
-                            </ul>
-                            <div class="flex-controls"></div>
+                                </ul>
+                                <div class="flex-controls"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- End slider -->
-
-            </aside>
+                    </aside>
+            <?php endif; ?>
 
 
             <div class="clear"></div>
-            <!--        START MAIN CONTENT-->
-
             <main class="container">
-                <!--  hiển thị sẵn các lỗi liên quan đến session hoặc validate
-              , các thông báo liên quan đến session sucess
-              -->
                 <?php
                 if (isset($_SESSION['error'])) {
                     //hiển thị mảng theo key trong 1 chuỗi mà ko cần nối chuỗi
@@ -554,13 +536,6 @@
             //hiển thị nội dung động tương ứng của từng view
             echo $this->content;
             ?>
-            <!--MAIN CONTENT-->
-            <!--    <h1>Nội dung động content nằm ở đây</h1>-->
-
-
-            <!--        END MAIN CONTENT -->
-
-            <!--        Start FOOTER-->
             <footer class="footer">
                 <div class="register-news">
                     <div class="container">
@@ -597,7 +572,8 @@
                                 <div class="footer-hotline">
                                     <p>HOTLINE HỖ TRỢ: </p>
                                     <?php
-                                    foreach ($contacts as $contact) :
+                                    // SỬA LỖI: $contacts đã được định nghĩa ở đầu file
+                                    foreach ($contacts as $contact) : 
                                     ?>
                                         <h3><?php echo $contact['hotline']; ?></h3>
                                     <?php endforeach; ?>
@@ -610,37 +586,35 @@
                 </div>
 
 
-                <!--<div class="map-footer">
-                    <p class="text-center">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.473685885786!2d105.73331873699033!3d21.053735080594365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31345457e292d5bf%3A0x20ac91c94d74439a!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBuZ2hp4buHcCBIw6AgTuG7mWk!5e0!3m2!1svi!2s!4v1654854212436!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                         <iframe src="
-                       
-                        " width="100%" height="400px" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </p>
-                </div>-->
-
-
                 <div class="coppyright">
-                    <p>Copyright &copy; 2022 Digital World. <a target='_blank' href='https://sv.dhcnhn.vn/'>Powered by NL</a>.</p>
+                    <p>Copyright © 2022 Digital World. <a target='_blank' href='https://sv.dhcnhn.vn/'>Powered by NL</a>.</p>
                 </div>
-            </footer>
 
-            <!--Scroll to Top-->
+                <style>
+                    .footer .register-news {
+                        background-color: #000000; /* Nền đen cho phần đăng ký tin */
+                    }
+                    .footer .coppyright {
+                        background-color: #000000; /* Nền đen cho phần copyright */
+                    }
+                    .footer .content-register-news h3 {
+                        color: #FFFFFF; /* Chữ "ĐĂNG KÝ NHẬN BẢN TIN" màu trắng */
+                    }
+                    .footer .content-register-news p,
+                    .footer .footer-hotline p,
+                    .footer .footer-hotline h3,
+                    .footer .coppyright p {
+                        color: #FFFFFF; /* Chữ còn lại trong footer màu trắng */
+                    }
+                    .footer .coppyright p a {
+                        color: #CCCCCC; /* Link trong footer màu xám nhạt */
+                    }
+                </style>
+                </footer>
 
             <a href="#" class="scrollToTop">
                 <i class="fa fa-chevron-up"></i>
             </a>
-
-
-
-            <!-- /.modal-dialog -->
-
-
-
-            <!-- Quick view -->
-            <!-- /.modal -->
-
-            <!-- Quick view -->
 
 
 

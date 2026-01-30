@@ -31,4 +31,36 @@ class Order_Detail extends Model {
         $order_details = $obj_select->fetchAll(PDO::FETCH_ASSOC);
         return $order_details;
     }
+
+    /**
+     * ======================================================
+     * PHƯƠNG THỨC MỚI ĐƯỢC THÊM VÀO
+     * ======================================================
+     * Lấy tên sản phẩm (title) và số lượng (quality) dựa trên order_id
+     * từ CSDL bạn cung cấp.
+     */
+    public function getProductsByOrderId($order_id) {
+        try {
+            // Sử dụng JOIN để kết nối order_details với products
+            // Lấy p.title (tên sản phẩm) và od.quality (số lượng)
+            $sql = "SELECT p.title, od.quality 
+                    FROM order_details AS od
+                    INNER JOIN products AS p ON od.product_id = p.id
+                    WHERE od.order_id = :order_id";
+            
+            $obj_select = $this->connection->prepare($sql);
+            
+            $params = [':order_id' => $order_id];
+            
+            $obj_select->execute($params);
+            
+            // Lấy tất cả sản phẩm
+            return $obj_select->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            // Ghi log lỗi nếu cần
+            error_log("Error fetching products for order ID $order_id: " . $e->getMessage());
+            return []; // Trả về mảng rỗng nếu có lỗi
+        }
+    }
 }

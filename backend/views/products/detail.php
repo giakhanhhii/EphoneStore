@@ -27,6 +27,11 @@ require_once 'helpers/Helper.php';
         <td><?php echo number_format($product['price']) ?></td>
     </tr>
     <tr>
+        <th>Quantity</th>
+        <td><?php echo $product['quantity'] ?></td>
+    </tr>
+
+    <tr>
         <th>Weight</th>
         <td><?php echo $product['weight']?></td>
     </tr>

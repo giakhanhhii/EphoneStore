@@ -95,9 +95,11 @@ form tìm kiếm thì sẽ ở trong phương thức get -->
                   <a href="index.php?controller=category&action=update&id=<?php echo $category['id'] ?>" title="Sửa">
                       <i class="fa fa-pencil-alt"></i>
                   </a>
-                  <a href="index.php?controller=category&action=delete&id=<?php echo $category['id'] ?>" title="Xóa"
-                     onclick="return confirm('Bạn có chắc chắn muốn xóa bản ghi này')">
-                      <i class="fa fa-trash"></i>
+                  <a href="#" 
+                    class="btn-delete-category" 
+                    data-id="<?php echo $category['id']; ?>" 
+                    title="Xóa">
+                    <i class="fa fa-trash"></i>
                   </a>
               </td>
           </tr>
@@ -110,3 +112,38 @@ form tìm kiếm thì sẽ ở trong phương thức get -->
 </table>
 <!--  hiển thị phân trang-->
 <?php echo $pagination; ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const deleteButtons = document.querySelectorAll('.btn-delete-category');
+
+  deleteButtons.forEach(function(button) {
+    button.addEventListener('click', function(event) {
+      event.preventDefault();
+      const categoryId = this.getAttribute('data-id');
+
+      // Gửi request AJAX kiểm tra xem danh mục có sản phẩm hay không
+      fetch(`index.php?controller=category&action=checkHasProducts&id=${categoryId}`)
+        .then(response => response.json())
+        .then(data => {
+          let message = '';
+          if (data.hasProducts) {
+            message = `Danh mục này hiện đang chứa ${data.totalProducts} sản phẩm.\n` +
+                      `Nếu bạn tiếp tục, toàn bộ sản phẩm thuộc danh mục này sẽ bị xóa.\n` +
+                      `Bạn có chắc chắn muốn tiếp tục không?`;
+          } else {
+            message = 'Bạn có chắc chắn muốn xóa danh mục này?';
+          }
+
+          if (confirm(message)) {
+            window.location.href = `index.php?controller=category&action=delete&id=${categoryId}`;
+          }
+        })
+        .catch(error => {
+          console.error('Lỗi khi kiểm tra danh mục:', error);
+          alert('Không thể kiểm tra dữ liệu. Vui lòng thử lại sau.');
+        });
+    });
+  });
+});
+</script>
+

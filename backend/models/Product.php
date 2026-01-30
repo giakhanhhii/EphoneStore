@@ -9,6 +9,7 @@ class Product extends Model
     public $title;
     public $avatar;
     public $price;
+    public $quantity;
     public $weight;
     public $supplier;
     public $summary;
@@ -97,13 +98,14 @@ class Product extends Model
     public function insert()
     {
         $obj_insert = $this->connection
-            ->prepare("INSERT INTO products(category_id, title, avatar, price, weight, supplier, summary, content, hot, status) 
-                                VALUES (:category_id, :title, :avatar, :price, :weight, :supplier, :summary, :content, :hot, :status)");
+            ->prepare("INSERT INTO products(category_id, title, avatar, price, quantity, weight, supplier, summary, content, hot, status) 
+                                VALUES (:category_id, :title, :avatar, :price, :quantity, :weight, :supplier, :summary, :content, :hot, :status)");
         $arr_insert = [
             ':category_id' => $this->category_id,
             ':title' => $this->title,
             ':avatar' => $this->avatar,
             ':price' => $this->price,
+            ':quantity' => $this->quantity,
             ':weight' => $this->weight,
             ':supplier' => $this->supplier,
             ':summary' => $this->summary,
@@ -133,7 +135,7 @@ class Product extends Model
     public function update($id)
     {
         $obj_update = $this->connection
-            ->prepare("UPDATE products SET category_id=:category_id, title=:title, avatar=:avatar, price=:price, weight=:weight,
+            ->prepare("UPDATE products SET category_id=:category_id, title=:title, avatar=:avatar, price=:price, quantity=:quantity, weight=:weight,
              supplier=:supplier, summary=:summary, content=:content, hot=:hot, status=:status, updated_at=:updated_at WHERE id = $id
 ");
         $arr_update = [
@@ -141,6 +143,7 @@ class Product extends Model
             ':title' => $this->title,
             ':avatar' => $this->avatar,
             ':price' => $this->price,
+            ':quantity' => $this->quantity,
             ':weight' => $this->weight,
             ':supplier' => $this->supplier,
             ':summary' => $this->summary,
@@ -154,8 +157,41 @@ class Product extends Model
 
     public function delete($id)
     {
-        $obj_delete = $this->connection
-            ->prepare("DELETE FROM products WHERE id = $id");
-        return $obj_delete->execute();
+        try {
+            $obj_delete = $this->connection
+                ->prepare("DELETE FROM products WHERE id = :id");
+            $obj_delete->execute([':id' => $id]);
+            return true;
+        } catch (PDOException $e) {
+            // Nếu lỗi do ràng buộc khóa ngoại (foreign key constraint)
+            if ($e->getCode() == '23000') { 
+                // Mã lỗi 23000 = lỗi ràng buộc toàn vẹn (Integrity constraint violation)
+                return false; 
+            }
+            // Nếu là lỗi khác, ném lại để dễ debug
+            throw $e;
+        }
     }
+
+    /**
+     * Xóa toàn bộ sản phẩm thuộc danh mục cụ thể
+     * @param int $category_id
+     * @return bool
+     */
+    public function deleteByCategory($category_id)
+    {
+        $obj_delete = $this->connection
+            ->prepare("DELETE FROM products WHERE category_id = :category_id");
+        return $obj_delete->execute([':category_id' => $category_id]);
+    }
+    public function countByCategory($category_id)
+    {
+        $sql = "SELECT COUNT(*) AS total FROM products WHERE category_id = :category_id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? (int)$row['total'] : 0;
+    }
+
 }

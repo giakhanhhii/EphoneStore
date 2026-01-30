@@ -228,24 +228,28 @@ class CategoryController extends Controller {
     require_once 'views/layouts/main.php';
   }
 
-  public function delete()
-  {
+ public function delete()
+{
     if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-      $_SESSION['error'] = 'ID không hợp lệ';
-      header('Location: index.php?controller=category&action=index');
-      exit();
+        $_SESSION['error'] = 'ID không hợp lệ';
+        header('Location: index.php?controller=category&action=index');
+        exit();
     }
+
     $id = $_GET['id'];
     $category_model = new Category();
+
+    // Gọi hàm xóa danh mục cùng dữ liệu liên quan
     $is_delete = $category_model->delete($id);
     if ($is_delete) {
-      $_SESSION['success'] = 'Xóa thành công';
+        $_SESSION['success'] = 'Đã xóa danh mục cùng các sản phẩm và bài viết liên quan.';
     } else {
-      $_SESSION['error'] = 'Xóa thất bại';
+        $_SESSION['error'] = 'Xóa thất bại. Vui lòng thử lại.';
     }
+
     header('Location: index.php?controller=category&action=index');
     exit();
-  }
+}
 
   public function detail()
   {
@@ -265,4 +269,24 @@ class CategoryController extends Controller {
     require_once 'views/layouts/main.php';
 
   }
+  public function checkHasProducts() {
+    header('Content-Type: application/json');
+    $id = $_GET['id'] ?? 0;
+
+    if (!$id) {
+        echo json_encode(['hasProducts' => false, 'totalProducts' => 0]);
+        exit;
+    }
+
+    require_once 'models/Product.php';
+    $product_model = new Product();
+    $total_products = $product_model->countByCategory($id);
+
+    echo json_encode([
+        'hasProducts' => $total_products > 0,
+        'totalProducts' => $total_products
+    ]);
+    exit;
+}
+
 }
