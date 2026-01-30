@@ -50,3 +50,9 @@ Migration to modern frameworks such as Laravel.
 ## 👤 Author
 
 Nguyen Trieu Gia Khanh
+## 👤 Author
+Nguyen Trieu Gia Khanh
+
+## 🤝 Contributors
+Vu Thi Mai Huong  
+Tran Thi Huong
