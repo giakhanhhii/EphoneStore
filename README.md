@@ -1,4 +1,4 @@
-# EphoneStore – E-commerce Solution for Mobile Devices
+# DigiWorld – E-commerce Solution for Mobile Devices
 
 ## 📌 Project Overview
 EphoneStore is a full-stack e-commerce web application developed using **Pure PHP with MVC (Model–View–Controller) architecture**.  
